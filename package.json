@@ -1,0 +1,11 @@
+{
+  "name": "chicago-cubs-v2-retail-suite",
+  "private": true,
+  "version": "2.0.0",
+  "scripts": {
+    "build:survey": "pnpm --dir survey run build",
+    "build:dashboard": "pnpm --dir dashboard run build",
+    "assemble": "node scripts/assemble.mjs",
+    "build": "pnpm run build:survey && pnpm run build:dashboard && pnpm run assemble"
+  }
+}
