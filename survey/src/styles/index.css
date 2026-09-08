@@ -32,7 +32,7 @@ button {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: #0E3386;
+  background: #ffffff;
   font-family: "Inter", "Arial", sans-serif;
 }
 
@@ -41,6 +41,8 @@ button {
   flex: 0 0 auto;
   overflow: hidden;
   background: #0E3386;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
 }
 
 .v2-stage {
@@ -3864,9 +3866,14 @@ button {
 .checkout-product-picker select { width:100%; max-width:420px; padding:12px; color:#0E3386; background:#fff; border:2px solid #0E3386; border-radius:8px; font:inherit; }
 .cubs-ballpark-background { position:absolute; inset:0; background:radial-gradient(ellipse at 75% 20%,#005CC8 0%,#0E3386 48%,#09245E 100%); }
 .home-mode .kiosk-scrim { background:linear-gradient(180deg,rgba(14,51,134,.08),rgba(9,36,94,.5)); }
-.home-hero .cubs-splash-title { display:flex; flex:1; flex-direction:column; justify-content:center; gap:26px; margin:20px 0; font-family:Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif; text-transform:uppercase; text-shadow:0 10px 24px rgba(0,0,0,.25); }
-.home-hero .cubs-splash-title .cubs-hero-line { display:block; font-size:104px; line-height:1; letter-spacing:-.015em; color:#fff; }
-.home-hero .cubs-splash-title .cubs-this { display:block; align-self:flex-start; font-size:184px; line-height:.93; letter-spacing:-.025em; color:#fff; background:#CC3433; padding:8px 28px 18px; box-shadow:10px 12px 0 #09245E; transform-origin:50% 50%; }
+.home-hero .cubs-splash-title { display:flex; flex:1; flex-direction:column; justify-content:center; gap:16px; margin:16px 0; font-family:Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif; font-weight:900; text-transform:uppercase; text-shadow:0 14px 30px rgba(0,0,0,.4); }
+.home-hero .cubs-splash-title .cubs-step-up { display:flex; align-items:baseline; gap:32px; font-size:240px; line-height:.9; letter-spacing:0; }
+.cubs-step-up .cubs-up { color:#CC3433; }
+.home-hero .cubs-splash-title .cubs-to-the { display:flex; align-items:center; gap:32px; font-size:120px; line-height:.9; letter-spacing:0; }
+.cubs-to-the i { display:block; height:6px; flex:1; background:rgba(255,255,255,.5); }
+.home-hero .cubs-splash-title .cubs-plate { display:block; font-size:320px; line-height:.86; letter-spacing:0; }
+.home-hero .cubs-splash-title .cubs-period { display:inline; color:#CC3433; }
+.home-hero .cubs-splash-title .cubs-this { display:block; align-self:flex-start; font-size:240px; line-height:.93; letter-spacing:-.025em; color:#fff; background:#CC3433; padding:8px 28px 18px; box-shadow:10px 12px 0 #09245E; transform-origin:50% 50%; }
 .cubs-brand-lockup img { width:174px; height:174px; }
 .home-service-option { min-height:210px; }
 @media(prefers-reduced-motion:reduce) { .cubs-home-content,.cubs-this,.cubs-hero-line { animation:none; } }

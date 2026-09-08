@@ -38,6 +38,10 @@ import {
 import { QRCodeSVG } from "qrcode.react";
 import { motion, useReducedMotion } from "motion/react";
 import logoSrc from "../imports/Chicago-Cubs-Logo.svg";
+import categoryHat from "../imports/category-hat.jpg";
+import categoryJersey from "../imports/category-jersey.png";
+import categoryHoodie from "../imports/category-hoodie.png";
+import categoryTshirt from "../imports/category-tshirt.png";
 import shopCatalogData from "../data/cubs-store-catalog.json";
 import { useV2Language, type V2Translate } from "./contexts/V2LanguageContext";
 import {
@@ -278,12 +282,17 @@ export default function App() {
 
   useEffect(() => {
     const fitStageToViewport = () => {
-      setStageScale(Math.min(window.innerWidth / STAGE_WIDTH, window.innerHeight / STAGE_HEIGHT));
+      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+      setStageScale(Math.max(0, Math.min(1, (window.innerWidth - 24) / STAGE_WIDTH, (viewportHeight - 24) / STAGE_HEIGHT)));
     };
 
     fitStageToViewport();
     window.addEventListener("resize", fitStageToViewport);
-    return () => window.removeEventListener("resize", fitStageToViewport);
+    window.visualViewport?.addEventListener("resize", fitStageToViewport);
+    return () => {
+      window.removeEventListener("resize", fitStageToViewport);
+      window.visualViewport?.removeEventListener("resize", fitStageToViewport);
+    };
   }, []);
 
   useEffect(() => {
@@ -934,7 +943,7 @@ function HomeScreen({ onStart }: { onStart: (flow: Flow) => void }) {
           shouldReduceMotion
             ? undefined
             : {
-                duration: 2.7,
+                duration: 4.4,
                 times: [0, 0.8, 0.825, 0.855, 0.89, 0.94, 1],
                 ease: "easeOut",
               }
@@ -972,16 +981,36 @@ function HomeScreen({ onStart }: { onStart: (flow: Flow) => void }) {
           <span>{t("Cubs Game Day")}</span>
         </motion.p>
         <h1 className="cubs-splash-title" aria-label="Step up to the plate. #THIS">
-          <motion.span className="cubs-hero-line" aria-hidden="true"
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 35 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: shouldReduceMotion ? 0 : 0.65, delay: shouldReduceMotion ? 0 : 0.45 }}>
-            Step up to<br />the plate.
+          <span className="cubs-step-up" aria-hidden="true">
+            <motion.span
+              initial={shouldReduceMotion ? false : { opacity: 0, x: '-145%', scale: 1.24, rotate: -2.5 }}
+              animate={{ opacity: 1, x: 0, scale: 1, rotate: 0 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { delay: 0.6, type: 'spring', stiffness: 245, damping: 16, mass: 0.76 }}>
+              Step
+            </motion.span>
+            <motion.span className="cubs-up"
+              initial={shouldReduceMotion ? false : { opacity: 0, x: '165%', scale: 1.28, rotate: 2.5 }}
+              animate={{ opacity: 1, x: 0, scale: 1, rotate: 0 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { delay: 1.24, type: 'spring', stiffness: 255, damping: 15, mass: 0.72 }}>
+              Up
+            </motion.span>
+          </span>
+          <motion.span className="cubs-to-the" aria-hidden="true"
+            initial={shouldReduceMotion ? false : { opacity: 0, x: '-58%', scale: 1.08 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={shouldReduceMotion ? { duration: 0 } : { delay: 1.88, type: 'spring', stiffness: 230, damping: 17, mass: 0.72 }}>
+            <span>To the</span><i />
+          </motion.span>
+          <motion.span className="cubs-plate" aria-hidden="true"
+            initial={shouldReduceMotion ? false : { opacity: 0, y: '82%', scale: 1.22 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={shouldReduceMotion ? { duration: 0 } : { delay: 2.36, type: 'spring', stiffness: 245, damping: 16, mass: 0.78 }}>
+            Plate<span className="cubs-period">.</span>
           </motion.span>
           <motion.span className="cubs-this" aria-hidden="true"
             initial={shouldReduceMotion ? false : { opacity: 0, scale: 4.5, rotate: -8 }}
             animate={{ opacity: 1, scale: 1, rotate: -3 }}
-            transition={shouldReduceMotion ? { duration: 0 } : { type: "spring", stiffness: 340, damping: 22, mass: 0.8, delay: 2.1 }}>
+            transition={shouldReduceMotion ? { duration: 0 } : { type: "spring", stiffness: 340, damping: 22, mass: 0.8, delay: 3.5 }}>
             #THIS
           </motion.span>
         </h1>
@@ -995,7 +1024,7 @@ function HomeScreen({ onStart }: { onStart: (flow: Flow) => void }) {
         transition={
           shouldReduceMotion
             ? { duration: 0 }
-            : { type: "spring", stiffness: 115, damping: 20, mass: 0.9, delay: 2.64 }
+            : { type: "spring", stiffness: 115, damping: 20, mass: 0.9, delay: 3.94 }
         }
       >
         <header>
@@ -1044,7 +1073,7 @@ function HomeScreen({ onStart }: { onStart: (flow: Flow) => void }) {
         className="home-footer-strip"
         initial={shouldReduceMotion ? false : { opacity: 0, y: 38 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: shouldReduceMotion ? 0 : 0.45, delay: shouldReduceMotion ? 0 : 3.14 }}
+        transition={{ duration: shouldReduceMotion ? 0 : 0.45, delay: shouldReduceMotion ? 0 : 4.24 }}
       >
         <BadgeCheck size={26} />
         <span>{t("Official Chicago Cubs game day services")}</span>
@@ -1069,18 +1098,13 @@ function CategoryScreen({
   onAllDepartments: () => void;
 }) {
   const { t } = useV2Language();
-  const featured = Object.fromEntries(
-    categories.map((category) => {
-      const featuredProduct = products.find((product) => product.categories.includes(category.id));
-
-      return [
-        category.id,
-        featuredProduct?.image ||
-          products.find((product) => product.categories.includes(category.id) && product.image)?.image ||
-          logoSrc,
-      ];
-    }),
-  ) as Record<ProductCategory, string>;
+  // Explicit, visually checked product-only artwork, independent of catalog order.
+  const featured: Record<ProductCategory, string> = {
+    hats: categoryHat,
+    jerseys: categoryJersey,
+    sweatshirts: categoryHoodie,
+    tshirts: categoryTshirt,
+  };
 
   return (
     <div className="content-stack category-screen">
