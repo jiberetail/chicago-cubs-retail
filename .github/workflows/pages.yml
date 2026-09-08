@@ -1,19 +1,43 @@
-name: Collect Cubs merchandise options
+name: Build and publish Cubs experience
 on:
+  push:
+    branches: [main, codex/cubs]
   workflow_dispatch:
 permissions:
   contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: cubs-pages
+  cancel-in-progress: false
 jobs:
-  collect:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node --max-old-space-size=256 scripts/collect-mlb-options.mjs
-      - uses: actions/upload-artifact@v4
-        if: always()
+      - run: pnpm --dir survey install --frozen-lockfile
+      - run: pnpm --dir survey run build
+      - run: pnpm --dir dashboard install --frozen-lockfile
+      - run: pnpm --dir dashboard run build
+      - run: node scripts/assemble.mjs
+      - run: node scripts/verify.mjs
+      - uses: actions/upload-pages-artifact@v3
         with:
-          name: cubs-merchandise-options
-          path: mlb-options.json
+          path: dist
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

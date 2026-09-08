@@ -5,7 +5,9 @@ const catalog = JSON.parse(fs.readFileSync('survey/src/data/cubs-store-catalog.j
 assert(catalog.products.length > 0, 'Catalog must contain real Cubs products');
 assert.equal(new Set(catalog.products.map(p => p.id)).size, catalog.products.length);
 assert.equal(catalog.catalogProductCount, catalog.products.length);
+assert.equal(catalog.optionsProductCount, catalog.products.length, 'Every product must have imported options');
 for (const product of catalog.products) {
+  assert(/^p-[a-z0-9-]+$/.test(product.id), `Malformed product ID: ${product.id}`);
   assert(product.name && product.image && product.sourceUrl, `Missing product data: ${product.id}`);
   assert(new URL(product.sourceUrl).hostname.endsWith('mlbshop.com'));
   assert(product.price > 0, `Invalid price: ${product.id}`);
@@ -13,6 +15,7 @@ for (const product of catalog.products) {
   assert(!product.sizes.some(size => /confirm|request|enter|mlb shop/i.test(size)), `Placeholder option: ${product.id}`);
   assert.equal(new Set(product.sizes).size, product.sizes.length, `Duplicate options: ${product.id}`);
   assert.deepEqual(Object.keys(product.inventory).sort(), [...product.sizes].sort(), `Option availability mismatch: ${product.id}`);
+  assert(Object.values(product.inventory).every(value => value === 0 || value === 1), `Invalid availability flag: ${product.id}`);
 }
 for (const category of catalog.mainCategories) {
   assert(catalog.products.some(product => product.categories.includes(category.id)), `Empty category: ${category.id}`);

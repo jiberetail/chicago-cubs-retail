@@ -7,7 +7,9 @@ Copied survey and dashboard with Cubs branding. Public URL must be organization-
 
 Orders synchronize between tabs on the same browser using localStorage; no live Cubs sales integration is configured. MLB Shop checkout opens the actual product page; baskets do not transfer.
 
-The September 8, 2026 catalog snapshot contains 4,526 distinct products across 24 merchandise departments. All accessible category pages were traversed, titles and prices audited, and product photos resolved from the official store. Listings overlap and change during collection; this is a snapshot, not a live inventory feed. Customers may request a size or option; MLB Shop confirms final availability and payment.
+The September 8, 2026 catalog snapshot contains 4,526 distinct products across 24 merchandise departments. Product options come from MLB Shop's structured product variants. The survey uses the reference size buttons, quantity controls, and Add to Basket flow. Availability is an import-time snapshot, not a live inventory feed; the numeric inventory values are selectable flags, not stock quantities.
+
+Collect options with `node --max-old-space-size=128 scripts/collect-mlb-options.mjs`, then `node scripts/import-mlb-options.mjs mlb-options.json`. Collection caches completed records and uses two concurrent requests; add `--refresh` to fetch a new snapshot. MLB Shop blocks GitHub-hosted collection, so run this from a network that can access the public product pages. The importer requires coverage of the entire catalog, and the release checks reject placeholder options.
 
 Public survey: https://jiberetail.github.io/chicago-cubs-retail/survey/
 

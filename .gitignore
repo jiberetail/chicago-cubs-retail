@@ -3,3 +3,5 @@
 dist/
 *.log
 .env*
+.mlb-options-cache/
+mlb-options.json
