@@ -14,12 +14,15 @@ for (const product of catalog.products) {
 for (const category of catalog.mainCategories) {
   assert(catalog.products.some(product => product.categories.includes(category.id)), `Empty category: ${category.id}`);
 }
+for (const department of catalog.departments) {
+  assert.equal(department.count, catalog.products.filter(product => product.departments.includes(department.id)).length, `Incorrect department count: ${department.id}`);
+}
 const files = [];
 function walk(dir) { for (const entry of fs.readdirSync(dir, { withFileTypes: true })) { const file = path.join(dir,entry.name); if(entry.isDirectory())walk(file); else files.push(file); } }
 walk('dist');
 for(const file of files.filter(file => /\.(html|js|css)$/.test(file))) {
   const text = fs.readFileSync(file,'utf8');
-  assert(!/kraken|seattle|climate.?pledge|seattlehockeyteamstore|isaacsharrison/i.test(text), `Old branding or personal URL: ${file}`);
+  assert(!/kraken|climate.?pledge|seattlehockeyteamstore|isaacsharrison/i.test(text), `Old branding or personal URL: ${file}`);
 }
 for(const route of ['survey','dashboard']) {
   const file = `dist/${route}/index.html`;

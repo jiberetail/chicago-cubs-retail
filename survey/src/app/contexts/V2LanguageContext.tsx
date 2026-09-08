@@ -11,6 +11,9 @@ type V2LanguageContextValue = {
 };
 
 const spanish: Record<string, string> = {
+  "Requested size or option": "Talla u opción solicitada",
+  "Enter your preferred size or option": "Ingresa tu talla u opción preferida",
+  "Final sizes and availability are confirmed on MLB Shop.": "Las tallas y la disponibilidad se confirman en MLB Shop.",
   "Select an item to open on your phone": "Selecciona un artículo para abrir en tu teléfono",
   "Verify options at store": "Confirma las opciones en la tienda",
   "Open your selected merchandise on MLB Shop. Add your sizes there and complete payment on your phone.": "Abre tus artículos en MLB Shop. Selecciona tus tallas allí y paga desde tu teléfono.",

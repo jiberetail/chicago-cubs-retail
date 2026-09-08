@@ -1145,7 +1145,7 @@ function DepartmentsScreen({
           const featuredProduct = products.find((product) => product.departments.includes(department.id));
           return (
             <button key={department.id} className="department-card" onClick={() => onSelectDepartment(department)}>
-              {featuredProduct && <img src={featuredProduct.image || logoSrc} alt="" />}
+              {featuredProduct && <img src={featuredProduct.image || logoSrc} alt="" loading="lazy" decoding="async" />}
               <div>
                 <strong>{t(department.label)}</strong>
                 <span>{t("{count} items", { count: availableCount.toLocaleString() })}</span>
@@ -1244,7 +1244,7 @@ function ProductsScreen({
           pageProducts.map((product) => (
             <button key={product.id} className="product-card" onClick={() => onSelectProduct(product)}>
               {product.badges?.[0] && <small className="product-badge">{merchandiseBadgeLabel(product.badges[0], t)}</small>}
-              <img src={product.image || logoSrc} alt={product.name} />
+              <img src={product.image || logoSrc} alt={product.name} loading="lazy" decoding="async" />
               <strong>{product.name}</strong>
               <div className="product-price">
                 <span>{product.priceDisplay ?? formatPrice(product.price)}</span>
@@ -1304,6 +1304,16 @@ function DetailScreen({
           <strong>{product.priceDisplay ?? formatPrice(product.price)}</strong>
           <span>{t(product.genderFit)}</span>
         </div>
+        <label className="requested-option">
+          <span>{t("Requested size or option")}</span>
+          <input
+            value={selectedSize === "Confirm on MLB Shop" ? "" : selectedSize}
+            onChange={(event) => onSelectSize(event.target.value)}
+            maxLength={40}
+            placeholder={t("Enter your preferred size or option")}
+          />
+          <small>{t("Final sizes and availability are confirmed on MLB Shop.")}</small>
+        </label>
         <div className="size-grid">
           {product.sizes.map((size) => {
             const available = product.inventory[size] > 0;
@@ -1341,7 +1351,7 @@ function DetailScreen({
             </span>
           </div>
         </div>
-        <button className="primary-action" disabled={!selectedSize} onClick={onAdd}>
+        <button className="primary-action" disabled={!selectedSize.trim()} onClick={onAdd}>
           {t("Add to Basket")}
         </button>
       </section>

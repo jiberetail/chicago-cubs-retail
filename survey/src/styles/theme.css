@@ -15,7 +15,7 @@
   --muted: #EAF0FC;
   --muted-foreground: #234C9C;
   --accent: #005CC8;
-  --accent-foreground: #0E3386;
+  --accent-foreground: #ffffff;
   --destructive: #CC3433;
   --destructive-foreground: #ffffff;
   --border: rgba(0, 0, 0, 0.1);
@@ -28,7 +28,7 @@
   --chart-1: #0E3386;
   --chart-2: #234C9C;
   --chart-3: #005CC8;
-  --chart-4: #FFFFFF;
+  --chart-4: #CC3433;
   --chart-5: #CC3433;
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);

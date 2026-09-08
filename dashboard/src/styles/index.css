@@ -241,7 +241,7 @@ input:focus-visible {
   gap: 24px;
   padding: 20px 30px;
   border-bottom: 1px solid #DAE4F8;
-  background: rgba(250, 252, 251, 0.96);
+  background: rgba(250, 251, 255, 0.96);
   backdrop-filter: blur(14px);
 }
 
