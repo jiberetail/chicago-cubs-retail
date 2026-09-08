@@ -10,6 +10,9 @@ for (const product of catalog.products) {
   assert(new URL(product.sourceUrl).hostname.endsWith('mlbshop.com'));
   assert(product.price > 0, `Invalid price: ${product.id}`);
   assert(product.sizes.length > 0, `Missing selection options: ${product.id}`);
+  assert(!product.sizes.some(size => /confirm|request|enter|mlb shop/i.test(size)), `Placeholder option: ${product.id}`);
+  assert.equal(new Set(product.sizes).size, product.sizes.length, `Duplicate options: ${product.id}`);
+  assert.deepEqual(Object.keys(product.inventory).sort(), [...product.sizes].sort(), `Option availability mismatch: ${product.id}`);
 }
 for (const category of catalog.mainCategories) {
   assert(catalog.products.some(product => product.categories.includes(category.id)), `Empty category: ${category.id}`);
@@ -33,4 +36,9 @@ for(const route of ['survey','dashboard']) {
   }
 }
 assert(fs.readFileSync('survey/src/app/App.tsx','utf8').includes('Step up to the plate. #THIS'));
+const app = fs.readFileSync('survey/src/app/App.tsx','utf8');
+const detail = app.slice(app.indexOf('function DetailScreen('), app.indexOf('function BasketScreen('));
+assert(!/<input|requested-option|Confirm on MLB Shop/.test(detail), 'Product selection must use option buttons, not free text');
+assert(detail.includes('product.sizes.map') && detail.includes('Add to Basket'), 'Missing merchandise selection controls');
+assert.deepEqual(catalog.products.find(p => p.id === 'p-203195350').sizes, ['S','M','L','XL','2XL','3XL','4XL'], 'Jersey size regression');
 console.log(`Verified both routes, Cubs branding, asset references, and ${catalog.products.length} merchandise records.`);

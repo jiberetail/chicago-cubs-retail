@@ -472,7 +472,7 @@ export default function App() {
   };
 
   const addProductToCart = () => {
-    if (!selectedSize) return;
+    if (!selectedProduct.sizes.includes(selectedSize) || !(selectedProduct.inventory[selectedSize] > 0)) return;
 
     setCart((currentCart) => {
       const existing = currentCart.find(
@@ -1328,17 +1328,7 @@ function DetailScreen({
           <strong>{product.priceDisplay ?? formatPrice(product.price)}</strong>
           <span>{t(product.genderFit)}</span>
         </div>
-        <label className="requested-option">
-          <span>{t("Requested size or option")}</span>
-          <input
-            value={selectedSize === "Confirm on MLB Shop" ? "" : selectedSize}
-            onChange={(event) => onSelectSize(event.target.value)}
-            maxLength={40}
-            placeholder={t("Enter your preferred size or option")}
-          />
-          <small>{t("Final sizes and availability are confirmed on MLB Shop.")}</small>
-        </label>
-        <div className="size-grid">
+        <div className="size-grid" role="group" aria-label={optionLabel}>
           {product.sizes.map((size) => {
             const available = product.inventory[size] > 0;
             return (
@@ -1350,7 +1340,7 @@ function DetailScreen({
                 disabled={!available}
               >
                 <span>{size}</span>
-                <small>{available ? t("Verify options at store") : t("Unavailable")}</small>
+                <small>{available ? (size === selectedSize ? t("Selected") : t("Select")) : t("Unavailable")}</small>
               </button>
             );
           })}
@@ -1375,7 +1365,7 @@ function DetailScreen({
             </span>
           </div>
         </div>
-        <button className="primary-action" disabled={!selectedSize.trim()} onClick={onAdd}>
+        <button className="primary-action" disabled={!selectedSize} onClick={onAdd}>
           {t("Add to Basket")}
         </button>
       </section>
